@@ -1,8 +1,9 @@
 build:
-	cl65 -t pce -o game.nes main.c 
+	ca65 hellomario -o hellomario.o --debug-info
+	ld65 hellomario.o -o hellomario.nes -t nes --dgbfile mellomario.dbgfile
 
 clean:
-	del *.pce
+	del *.nes
 
 run:
-	EmuHawk ./game.pce
+	EmuHawk ./hellomario.nes
