@@ -10,6 +10,7 @@
 .byte $00
 .byte $00, $00, $00, $00, $00 ; filler bytes
 .segment "ZEROPAGE" ; LSB 0 - FF
+world: .res 2 
 .segment "STARTUP"
 Reset:
     SEI ; Disables all interrupts
@@ -72,8 +73,39 @@ LoadPalettes:
     STA $2007 ; $3F00, $3F01, $3F02 => $3F1F
     INX
     CPX #$20
-    BNE LoadPalettes    
+    BNE LoadPalettes 
 
+    ; init world to point to worlddata
+    LDA #<WorldData
+    STA world
+    LDA #>WorldData
+    STA world+1
+
+    ; setup address on PPU for nametable data
+    BIT $2002
+    lda #$20
+    sta $2006
+    lda #$00
+    sta $2006
+
+    LDX #$00
+    ldy #$00
+LoadWorld:
+    LDA (world), y
+    sta $2007
+    iny
+    cpx #$03
+    bne :+
+    cpy #$c0
+    beq DoneLoadingWorld
+:
+    cpy #$00
+    bne LoadWorld
+    inx
+    inc world+1
+    jmp LoadWorld
+
+DoneLoadingWorld:
     LDX #$00
 LoadSprites:
     LDA SpriteData, X
@@ -103,6 +135,9 @@ NMI:
 PaletteData:
   .byte $22,$29,$1A,$0F,$22,$36,$17,$0f,$22,$30,$21,$0f,$22,$27,$17,$0F  ;background palette data
   .byte $22,$16,$27,$18,$22,$1A,$30,$27,$22,$16,$30,$27,$22,$0F,$36,$17  ;sprite palette data
+
+WorldData:
+    .incbin "world.bin"
 
 SpriteData:
   .byte $08, $00, $00, $08
