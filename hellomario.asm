@@ -107,6 +107,17 @@ LoadWorld:
 
 DoneLoadingWorld:
     LDX #$00
+
+SetAttributes:
+    lda #$55
+    sta $2007
+    inx
+    cpx #$40
+    bne SetAttributes
+
+    ldx #$00
+    ldy #$00
+
 LoadSprites:
     LDA SpriteData, X
     STA $0200, X
