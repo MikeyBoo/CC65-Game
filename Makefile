@@ -1,9 +1,10 @@
 build:
-	ca65 hellomario.asm -o hellomario.o --debug-info
-	ld65 hellomario.o -o hellomario.nes -t nes --dbgfile hellomario.dbg
-
-clean:
-	del *.nes
+	cc65 -Ors --codesize 500 -T -g -t c64 game.c
+	ca65 game.s
+	ld65 -o game.prg -t c64 -Ln game.lbl -m game.map game.o c64.lib
 
 run:
-	EmuHawk ./hellomario.nes
+	x64sc game.prg
+
+clean:
+	del *.lbl *.map *.o *.prg
