@@ -1,10 +1,10 @@
+#include <stdio.h>
 #include <stdlib.h>
-#include <conio.h>
 
-static const char Text [] = "this is my message";
+extern const char text[];       /* In text.s */
 
-int main (void) {
-    clrscr ();
-    cprintf ("%s", Text);
+int main (void)
+{
+    printf ("%s\n", text);
     return EXIT_SUCCESS;
 }
