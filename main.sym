@@ -1,0 +1,11 @@
+Label				Addr	Bank
+-----				----	----
+DEVELO				0000	 f0
+_bank_base			0000	 f0
+_call_bank			0001	 f0
+CDROM				0000	 f0
+MAGICKIT			0001	 f0
+_nb_bank			0002	 f0
+RESET				e000	 00
+	.loop			e028	 00
+_bss_end			2201	 f0
