@@ -4,39 +4,41 @@
     5           E000          .org $e000
     6           E000          .code
     7                     
-    8  00:E000            RESET:
-    9  00:E000  78            sei
-   10  00:E001  D4            csh             ;clock set high
-   11  00:E002  D8            cld
-   12  00:E003  A9 FF         lda #$ff        ;map in I/O
-   13  00:E005  53 01         tam #0
-   14  00:E007  AA            tax
-   15  00:E008  A9 F8         lda #$f8        ;map in RAM
-   16  00:E00A  53 02         tam #1
-   17                     
-   18  00:E00C  9A            txs
-   19  00:E00D  AD 00 00      lda $0000
-   20  00:E010  A9 07         lda #$07
-   21  00:E012  8D 02 14      sta $1402       ;IRQ mask
-   22                     
-   23  00:E015  03 05         st0 #5          ;disable VDC interrupt, screen OFF
-   24  00:E017  13 00         st1 #0
-   25  00:E019  23 00         st2 #0
-   26                     
-   27                     
-   28  00:E01B  A9 DE         lda #$de
-   29  00:E01D  8D 10 20      sta $2010
-   30  00:E020  A9 AD         lda #$ad
-   31  00:E022  8D 11 20      sta $2011
-   32                     
-   33  00:E025  48            pha
-   34  00:E026  3A            dec a
-   35  00:E027  48            pha
-   36                     
-   37  00:E028            .loop
-   38  00:E028  80 FE         bra .loop
-   39                     
-   40                     
+    8                     ;test
+    9                     
+   10  00:E000            RESET:
+   11  00:E000  78            sei             ;disable interrupts
+   12  00:E001  D4            csh             ;clock set high
+   13  00:E002  D8            cld             ;clear decimal mode
+   14  00:E003  A9 FF         lda #$ff        ;map in I/O
+   15  00:E005  53 01         tam #0          ;memory page 0
+   16  00:E007  AA            tax             ;$ff to x-register
+   17  00:E008  A9 F8         lda #$f8        ;map in RAM
+   18  00:E00A  53 02         tam #1          ;mpr1
+   19                     
+   20  00:E00C  9A            txs
+   21  00:E00D  AD 00 00      lda $0000
+   22  00:E010  A9 07         lda #$07
+   23  00:E012  8D 02 14      sta $1402       ;IRQ mask
+   24                     
+   25  00:E015  03 05         st0 #5          ;disable VDC interrupt, screen OFF
+   26  00:E017  13 00         st1 #0
+   27  00:E019  23 00         st2 #0
+   28                     
+   29                     
+   30  00:E01B  A9 DE         lda #$de
+   31  00:E01D  8D 10 20      sta $2010
+   32  00:E020  A9 AD         lda #$ad
+   33  00:E022  8D 11 20      sta $2011
+   34                     
+   35  00:E025  48            pha
+   36  00:E026  3A            dec a
+   37  00:E027  48            pha
+   38                     
+   39  00:E028            loop:
+   40  00:E028  80 FE         bra loop
    41                     
-   42           FFFE          .org $fffe
-   43  00:FFFE  00 E0         .dw RESET
+   42                     
+   43                     
+   44           FFFE          .org $fffe
+   45  00:FFFE  00 E0         .dw RESET
