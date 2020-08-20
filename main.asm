@@ -5,15 +5,17 @@
     .org $e000
     .code
 
+;test
+
 RESET:
-    sei
+    sei             ;disable interrupts
     csh             ;clock set high
-    cld
+    cld             ;clear decimal mode
     lda #$ff        ;map in I/O
-    tam #0
-    tax
+    tam #0          ;memory page 0
+    tax             ;$ff to x-register
     lda #$f8        ;map in RAM
-    tam #1
+    tam #1          ;mpr1
 
     txs
     lda $0000

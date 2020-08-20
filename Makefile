@@ -1,6 +1,6 @@
 
 build:
-	./pceas2 -raw -m -13 main.asm
+	./pceas -raw -m -13 main.asm
 
 run:
-	EmuHawk ./main.pce
+	mednafen ./main.pce
