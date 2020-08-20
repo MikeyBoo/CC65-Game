@@ -4,7 +4,7 @@
     5           E000          .org $e000
     6           E000          .code
     7                     
-    8                     ;test
+    8                     ;using pceas2
     9                     
    10  00:E000            RESET:
    11  00:E000  78            sei             ;disable interrupts
@@ -22,8 +22,8 @@
    23  00:E012  8D 02 14      sta $1402       ;IRQ mask
    24                     
    25  00:E015  03 05         st0 #5          ;disable VDC interrupt, screen OFF
-   26  00:E017  13 00         st1 #0
-   27  00:E019  23 00         st2 #0
+   26  00:E017  13 00         st1 #0          ;low byte
+   27  00:E019  23 00         st2 #0          ;high byte
    28                     
    29                     
    30  00:E01B  A9 DE         lda #$de
@@ -35,10 +35,23 @@
    36  00:E026  3A            dec a
    37  00:E027  48            pha
    38                     
-   39  00:E028            loop:
-   40  00:E028  80 FE         bra loop
-   41                     
-   42                     
-   43                     
-   44           FFFE          .org $fffe
-   45  00:FFFE  00 E0         .dw RESET
+   39  00:E028  A2 01         ldx #1
+   40  00:E02A            .loop
+   41  00:E02A  9C 02 04      stz $0402
+   42  00:E02D  8E 03 04      stx $0403
+   43  00:E030  8D 04 04      sta $0404
+   44  00:E033  1A            inc a
+   45  00:E034  D0 01         bne .next
+   46  00:E036  C8            iny
+   47  00:E037            .next
+   48  00:E037  8C 05 04      sty $0405
+   49  00:E03A  48            pha
+   50  00:E03B  68            pla
+   51  00:E03C  48            pha
+   52  00:E03D  68            pla
+   53  00:E03E  80 EA         bra .loop
+   54                     
+   55                     
+   56                     
+   57           FFFE          .org $fffe
+   58  00:FFFE  00 E0         .dw RESET

@@ -5,7 +5,7 @@
     .org $e000
     .code
 
-;test
+;using pceas2
 
 RESET:
     sei             ;disable interrupts
@@ -23,8 +23,8 @@ RESET:
     sta $1402       ;IRQ mask
 
     st0 #5          ;disable VDC interrupt, screen OFF
-    st1 #0
-    st2 #0
+    st1 #0          ;low byte
+    st2 #0          ;high byte
 
 
     lda #$de
@@ -36,7 +36,20 @@ RESET:
     dec a
     pha
 
+    ldx #1
 .loop
+    stz $0402
+    stx $0403
+    sta $0404
+    inc a
+    bne .next
+    iny
+.next
+    sty $0405
+    pha
+    pla
+    pha
+    pla
     bra .loop
 
 
